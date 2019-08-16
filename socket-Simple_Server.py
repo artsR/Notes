@@ -24,8 +24,8 @@ data = connection.recv(16)
 print('received "%s"' % (data) )
 if data:
   connection.sendall(data)
- else:
+else:
   print('No data from', client)
  
- # Close the connection:
- connection.close()
+# Close the connection:
+connection.close()
