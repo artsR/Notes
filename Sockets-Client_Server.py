@@ -15,7 +15,7 @@ port = 8080
 # Connect the socket to the port where the server is listening
 server_address = ((host, port))
  
-print "connecting"
+print('connecting')
  
 stream_socket.connect(server_address)
  
@@ -26,8 +26,8 @@ stream_socket.sendall(message)
  
 # response
 data = stream_socket.recv(10)
-print data
+print(data)
  
  
-print 'socket closed'
+print('socket closed')
 stream_socket.close()
