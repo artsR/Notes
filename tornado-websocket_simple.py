@@ -12,9 +12,9 @@ class ApplicationHandler(tornado.web.RequestHandler):
     <h2>Welcome to the Tornado Framework</h2>
 </body>
 </html>"""
-    
+
     self.write(message)
-    
+
 if __name__ == '__main__':  # 'main' method is the entry for the program
   application = tornado.web.Application([    # creates a base for the web application and takes a collection of handlers
       (r'/', ApplicationHandler),

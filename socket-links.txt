@@ -1,0 +1,16 @@
+
+https://www.youtube.com/watch?v=T0rYSFPAR0A
+https://www.binarytides.com/python-socket-programming-tutorial/
+https://www.binarytides.com/code-telnet-client-sockets-python/
+
+#Youtube:
+https://www.youtube.com/watch?v=Lbfe3-v7yE0
+
+# Chat Client Server app (doesn't work on Win):
+https://www.binarytides.com/code-chat-application-server-client-sockets-python/
+
+# What means bind socket to the ip adress and port:
+https://stackoverflow.com/questions/39314086/what-does-it-mean-to-bind-a-socket-to-any-address-other-than-localhost
+
+# waiting for I/
+https://pymotw.com/2/select/
