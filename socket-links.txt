@@ -1,16 +1,35 @@
 
+!https://realpython.com/python-sockets/
+
+# Generally about Python Network Programming:
+!https://www.youtube.com/watch?v=6jteAOmdsYg&list=PLhTjy8cBISErYuLZUvVOYsR1giva2payF
+!https://www.youtube.com/watch?v=8h6QED6FJnA
+
+#
 https://www.youtube.com/watch?v=T0rYSFPAR0A
+https://docs.python.org/3/howto/sockets.html
+https://pythonprogramming.net/server-chatroom-sockets-tutorial-python-3/?completed=/pickle-objects-sockets-tutorial-python-3/
+!https://www.geeksforgeeks.org/socket-programming-python/
+
 https://www.binarytides.com/python-socket-programming-tutorial/
 https://www.binarytides.com/code-telnet-client-sockets-python/
 
 #Youtube:
 https://www.youtube.com/watch?v=Lbfe3-v7yE0
 
-# Chat Client Server app (doesn't work on Win):
+# Chat Client Server app:
 https://www.binarytides.com/code-chat-application-server-client-sockets-python/
+https://www.tutorialspoint.com/simple-chat-room-using-python
+https://pythonprogramming.net/server-chatroom-sockets-tutorial-python-3/?completed=/pickle-objects-sockets-tutorial-python-3/
+
+# Online Multiplayer Game w/ Python - Sockets and Networking:
+!https://www.youtube.com/watch?v=-3B1v-K1oXE
 
 # What means bind socket to the ip adress and port:
 https://stackoverflow.com/questions/39314086/what-does-it-mean-to-bind-a-socket-to-any-address-other-than-localhost
 
-# waiting for I/
+# waiting for I/O
+https://stackoverflow.com/questions/25495593/when-using-socket-recv-the-program-hangs-up-when-there-are-no-more-bytes-to-r
+
 https://pymotw.com/2/select/
+https://tangentsoft.net/wskfaq/articles/io-strategies.html
