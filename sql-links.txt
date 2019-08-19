@@ -1,0 +1,7 @@
+
+https://code.tutsplus.com/articles/new-course-connect-a-database-to-your-python-application--cms-31199?_ga=2.214460690.428035631.1565862070-2032931221.1565862070
+
+https://www.youtube.com/watch?v=ZS_kXvOeQ5Y
+
+# Flask
+https://code.tutsplus.com/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-2--cms-22999?_ga=2.75451671.428035631.1565862070-2032931221.1565862070

@@ -5,6 +5,7 @@ HEADER_SIZE = 10
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.gethostname()
 port = 500
+
 server.bind((host, port))
 server.listen(10)
 
@@ -22,12 +23,14 @@ while True:
     #conn.send(bytes('Welcome to our server', 'utf-8'))
     conn.send(msg) # the sent data must be bytes
     #------ some fancy code ------------
-    while True:
+    i = 0
+    while i < 5:
         time.sleep(3)
-        msg = f'{time.time()}'
+        msg = f'{time.ctime()}'
         msg = pickle.dumps(msg)
         msg = bytes(f'{len(msg):<{HEADER_SIZE}}','utf-8') + msg
         conn.send(msg)
+        i += 1
     #-----------------------------------
     conn.close()
     print(f'Client {addr} disconnected')

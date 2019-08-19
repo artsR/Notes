@@ -13,6 +13,8 @@ https://pythonprogramming.net/server-chatroom-sockets-tutorial-python-3/?complet
 
 https://www.binarytides.com/python-socket-programming-tutorial/
 https://www.binarytides.com/code-telnet-client-sockets-python/
+https://code.tutsplus.com/tutorials/introduction-to-network-programming-in-python--cms-30459  #+Tornado
+https://www.geeksforgeeks.org/cristians-algorithm/     #Cristian's algorithm
 
 #Youtube:
 https://www.youtube.com/watch?v=Lbfe3-v7yE0
@@ -21,6 +23,9 @@ https://www.youtube.com/watch?v=Lbfe3-v7yE0
 https://www.binarytides.com/code-chat-application-server-client-sockets-python/
 https://www.tutorialspoint.com/simple-chat-room-using-python
 https://pythonprogramming.net/server-chatroom-sockets-tutorial-python-3/?completed=/pickle-objects-sockets-tutorial-python-3/
+
+https://stackoverflow.com/questions/30604192/creating-a-real-time-chat-with-python-and-websocket
+https://medium.com/swlh/lets-write-a-chat-app-in-python-f6783a9ac170   #+Tkinter
 
 # Online Multiplayer Game w/ Python - Sockets and Networking:
 !https://www.youtube.com/watch?v=-3B1v-K1oXE

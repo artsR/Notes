@@ -1,0 +1,6 @@
+https://code.tutsplus.com/tutorials/an-introduction-to-pythons-flask-framework--net-28822?_ga=2.150948531.428035631.1565862070-2032931221.1565862070
+
+https://code.tutsplus.com/tutorials/intro-to-flask-adding-a-contact-page--net-28982?_ga=2.150948531.428035631.1565862070-2032931221.1565862070
+
+# MySQL
+https://code.tutsplus.com/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-2--cms-22999?_ga=2.75451671.428035631.1565862070-2032931221.1565862070

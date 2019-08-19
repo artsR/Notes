@@ -1,0 +1,20 @@
+# Generally / Syllabus
+https://www.codecnetworks.com/document/python/Python%20Web%20Development%20with%20Django%20Course.pdf
+
+https://buildmedia.readthedocs.org/media/pdf/django/1.11.x/django.pdf
+
+#
+https://www.tutorialspoint.com/django/django_admin_interface.htm
+https://code.tutsplus.com/articles/new-course-getting-started-with-django--cms-24687?_ga=2.252012044.428035631.1565862070-2032931221.1565862070
+
+https://code.tutsplus.com/tutorials/10-django-trouble-spots-for-beginners--net-12012?_ga=2.137694517.428035631.1565862070-2032931221.1565862070
+
+# TODO List
+https://code.tutsplus.com/articles/intro-to-django-building-a-to-do-list--net-2871?_ga=2.137694517.428035631.1565862070-2032931221.1565862070
+
+# Youtube
+https://www.youtube.com/watch?v=Z4D3M-NSN58&list=PLzMcBGfZo4-kQkZp-j9PNyKq7Yw5VYjq9
+https://www.youtube.com/watch?v=UmljXZIypDc&list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU&index=78&t=0s
+
+# Quiz
+https://code.tutsplus.com/articles/quiz-are-you-ready-to-get-started-with-django--cms-24714?_ga=2.252012044.428035631.1565862070-2032931221.1565862070
