@@ -47,3 +47,6 @@ nobody.talk()
 fred.version = 2 # the better way is to do it through 'method'
 print(fred.version)
 print(nobody.version) # outcome: 1 - still 1 even if 'fred' changed to 2
+simba = Dog('Simba')
+print(simba.version)  # outcome: 1
+print(fred.version)   # outcome: 2 - by assign value to this variable 'fred' creates his own 'version'

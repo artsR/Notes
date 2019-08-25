@@ -3,3 +3,7 @@ https://runestone.academy/runestone/books/published/thinkcspy/ClassesBasics/toct
 
 # Overloading methods:
 http://www.siafoo.net/article/57
+
+# Youtube:
+https://www.youtube.com/watch?v=GP_BOgF7Ing&list=PLhTjy8cBISEos-xZ-bS_O-zc6q238i-gQ
+https://www.youtube.com/watch?v=jCzT9XFZ5bw&list=PL-osiE80TeTsqhIuOqKhwlXsIBIdSeYtc&index=6

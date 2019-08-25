@@ -21,7 +21,7 @@ class Animal():
 
 class Dog(Animal):
     num_dogs = 0
-    def __init__(self, name='', age=0): # I don't even have to use 'super()'. I may input 'pass'
+    def __init__(self, name='', age=0): # I don't even have to use 'super()'. I may input 'pass' instead of this line
         super().__init__(name, age)     # and it still will be working. However I want to add another variable: 'type' so I need it.
         self.type   = 'dog'
         Dog.num_dogs += 1
