@@ -8,7 +8,7 @@ class Animal():
         self.age  = age
         self.animals.append(self)
         self.type = 'nobody'
-
+            
     def speak(self):
         print(f'I am {self.name} and I am {self.age} years old {self.type}')
 
