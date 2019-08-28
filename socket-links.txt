@@ -17,6 +17,7 @@ https://code.tutsplus.com/tutorials/introduction-to-network-programming-in-pytho
 https://www.geeksforgeeks.org/cristians-algorithm/     #Cristian's algorithm
 
 #Youtube:
+https://youtu.be/8h6QED6FJnA
 https://www.youtube.com/watch?v=Lbfe3-v7yE0
 
 # Chat Client Server app:

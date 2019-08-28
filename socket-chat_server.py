@@ -37,6 +37,9 @@ IP   = socket.gethostbyname(HOST)
 """Binds the Server to an entered IP and at the specified port number.
 It means that Server informs Operating System about it.
 The Client must be aware of these parameters."""
+# server.bind((' ',PORT)) # accept from any interface. Any incoming connections
+# server.bind(('127.0.0.1',PORT)) # only connect locally
+# server.bind(('10.255.88.76',PORT)) # only this specific interface
 server.bind((IP, PORT))
 
 '''Listens for 100 active connections.'''
