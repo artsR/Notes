@@ -1,0 +1,72 @@
+# https://www.udemy.com/course/python-flask-beginners/
+"""Extension .yaml contains config information ex.:
+mysql_host: 'localhost'
+mysql_user: 'root'
+mysql_password: 'pass'
+mysql_db: 'my_database'
+
+# to use it this information in 'other' file I need to add to 'other' file:
+import yaml
+
+db = yaml.load(open('example_db.yaml'))
+# then I can refer to db:
+db['mysql_host']
+
+# The all app may look like this:
+from flask import Flask, render_template
+from flask_mysqldb import MySQL
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash # returns True or False
+                                                # Takes 2 parameters (hass_pass, real_pass)
+import yaml
+
+app = Flask(__name__)
+
+# Configure db:
+db = yaml.load(open('example_db.yaml'))
+app.config['MYSQL_HOST'] = db['mysql_host']
+app.config['MYSQL_USER'] = db['mysql_'user]
+app.config['MYSQL_PASSWORD'] = db['mysql_password']
+app.config['MYSQL_DB'] = db['mysql_db']
+
+mysql = MySQL(app)
+
+@app.route('/')
+def index():
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO user VALUES(%s)", ['CodArt'])
+    mysql.connection.commit()  # apply changes
+    rv = cur.execute("SELECT * FROM user")
+    if rv > 0:
+        users = cur.fetchall()
+        return users[0]
+    return render_template('index.html')
+
+@app.route('/')
+def index():
+    if request.method == 'POST':
+        form = request.form
+        pass = form['pass']
+        age = form['age']
+        cur = mysql.connection.cursor()
+        pass = generate_password_hash(pass)
+        cur.execute("INSERT INTO user VALUES(%s, %s)", [pass, age])
+        mysql.connection.commit()  # apply changes
+    return render_template('index.html')
+
+@app.route('/employees')
+def employees():
+    cur = mysql.connection.cursor()
+    rv = cur.execute("SELECT * FROM employee")
+    if rv > 0:
+        employees = cur.fetchall()
+        return str(check_password_hash(employees[1]['pass'], 'sunday'))
+        #return render_template('employees.html', employees=employees)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+if __name__ = '__main__':
+    app.run(debug=True)
+"""
