@@ -1,3 +1,6 @@
+-- Initialize database.
+-- Destroy any existing data and create new ones.
+
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS post;
 

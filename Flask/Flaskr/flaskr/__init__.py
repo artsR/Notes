@@ -33,14 +33,20 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, sir!'
 
-    from . import db
+    # Register the database commands:
+    from flaskr import db
     db.init_app(app)
 
-    from . import auth
-    app.register_blueprint(auth.bp)
+    # Apply the blueprints to the app:
+    from flaskr import auth
+    from flaskr import blog
 
-    from . import blog
+    app.register_blueprint(auth.bp)
     app.register_blueprint(blog.bp)
+
+    # Make any 'endpoint' 'index' equals to "/":
+    # It means that 'url_for('index') == url_for('blog.index')' is True.
     app.add_url_rule('/', endpoint='index')
+
 
     return app

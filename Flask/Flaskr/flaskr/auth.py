@@ -9,8 +9,35 @@ from flaskr.db import get_db
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
+def login_required(view):
+    """View decorator that redirects anonymous users to the login page."""
+
+    @functools.wraps(view) # Kiedy jest uruchamiana ta funkcja?
+    def wrapped_view(**kwargs):
+        if g.user is None: # 'g': global namespace for holding any data I want during single app context.
+                        # 'single app context' lasts for ONE request/response cicle.
+                        # NOT store data across requests.
+            return redirect(url_for('auth.login'))
+        return view(**kwargs)
+    return wrapped_view
+
+@bp.before_app_request
+def load_logged_in_user():
+    """Check the status of the user (if there is any id assigned to the current user)."""
+
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = (
+            get_db().execute("SELECT * FROM user WHERE id = ?", (user_id,)).fetchone()
+        )
+
+
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
+
     if request.method == 'POST':
                     # 'request.form' is special type of 'dict'
         username = request.form['username']
@@ -35,13 +62,15 @@ def register():
             db.commit()
             return redirect(url_for('auth.login'))
 
-        flash(error)
+        flash(error) # is using cookies. Make sure set 'app.secret_key = "bla_bla" '.
 
-    return render_template('/auth/register.html') # execute if there was error or user
-                                                # navigate directly to 'auth/register' (GET instead of POST)
+    return render_template('/auth/register.html') # executed if there was error or user
+                                                # navigated directly to 'auth/register' (GET instead of POST).
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+
+    # Login registered user by adding the user ID to the session:
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -65,26 +94,7 @@ def login():
 
     return render_template('auth/login.html')
 
-@bp.before_app_request
-def load_logged_in_user():
-    user_id = session.get('user_id')
-
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = get_db().execute(
-            "SELECT * FROM user WHERE id = ?", (user_id,)
-        ).fetchone()
-
 @bp.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-        return view(**kwargs)
-    return wrapped_view

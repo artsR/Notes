@@ -11,7 +11,7 @@ def test_index(client, auth):
     response = client.get('/')
     assert b'Log Out' in response.data
     assert b'test title' in response.data
-    #assert b'by test on 2019-08-30' in response.data
+    assert b'by test on 2019-09-05' in response.data # shows Fail.
     assert b'test\nbody' in response.data
     assert b'href="/1/update"' in response.data
 

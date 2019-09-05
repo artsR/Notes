@@ -7,7 +7,7 @@ from flask.cli import with_appcontext
 def get_db():
     if 'db' not in g:
                 # 'g' is a special object that is unique for each 'request'.
-                # Stored data that might be accessed by multiple functions during the 'request'.
+                # Stores data that might be accessed by multiple functions during the 'request'.
                 # The 'connection' is stored and reused instead of creating a new one
                 # if 'get_db' is called second time in the same 'request'.
         g.db = sqlite3.connect(
@@ -41,6 +41,8 @@ def init_db_command():
     click.echo('Initialized the database.')
 
 # Does registration of 'close_db' and 'init_db_command' to make using it possible.
+# However, since I am using a 'factory function', that instance isn't available now.
+# So instead, I put 'registration' into a function that takes 'application' and does registr.:
 def init_app(app):
     app.teardown_appcontext(close_db)
         # tells Flask to call that function when 'cleaning up' after returning 'response'.
