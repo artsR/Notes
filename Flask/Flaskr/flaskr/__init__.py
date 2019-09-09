@@ -8,7 +8,8 @@ def create_app(test_config=None):
                 # name of current Python module
                             # relative to the instance folder (outside the 'flaskr' package - security reasons)
     app.config.from_mapping(
-        SECRET_KEY='dev', # this value should be replace to random one when deploying.
+        SECRET_KEY='dev', # this value should be replace to random one when deploying:
+                        #   python -c 'import os; print(os.urandom(16))'
         DATABASE=os.path.join(app.instance_path, 'flaskr_sqlite'),
                                     # instance_path refers to path where Flask instance is (instance folder).
     )

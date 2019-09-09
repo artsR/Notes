@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Welcome</title>
+        <style media="screen">
+            .index { font-size:12px; font-weight: bold }
+            .header {
+                text-align: center;
+                text-decoration: underline;
+                font-family: monospace, sans-serif;
+                font-weight: weight;
+                font-size: 35px;
+                color: #94f021;
+                background: black;
+            }
+            body {background: #EEE}
+        </style>
+    </head>
+    <body>
+        <div class="index">
+            Microblog:
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
+        <hr>
+        {% if username %}
+            <h1 class="header">Hello, {{ username }}!</h1>
+        {% else %}
+            <h1 class="header">Hello, Sir!</h1>
+        {% endif %}
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>
