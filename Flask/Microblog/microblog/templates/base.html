@@ -21,11 +21,16 @@
         <div class="index">
             Microblog:
             <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('login') }}">Login</a>
+            {% if current_user.is_anonymous %}
+            <a href="{{ url_for('login') }}">Sign In</a>
+            {% else %}
+            <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
         </div>
         <hr>
-        {% if username %}
-            <h1 class="header">Hello, {{ username }}!</h1>
+        {% if current_user.username %}
+            <h1 class="header">Hello, {{ current_user.username }}!</h1>
         {% else %}
             <h1 class="header">Hello, Sir!</h1>
         {% endif %}
