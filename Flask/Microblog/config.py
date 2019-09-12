@@ -11,6 +11,8 @@ and provide a fallback value when the environment does not define the variable.
 os.environ.get('variable_name')"""
 
 class Config(object):
+    """Below variables can be reached by: 'app.config['variable']'."""
+
     # SECRET_KEY is also used as a cryptographic key to generate signatures or tokens.
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'blablabla'
     SQLALCHEMY_DATABASE_URI = (os.environ.get('DATABASE_URL') or
@@ -23,4 +25,7 @@ class Config(object):
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    ADMINS = ['pythonarts@op.pl']
+    ADMINS = ['blabla@op.pl']
+
+    # Pagination:
+    POSTS_PER_PAGE = 3

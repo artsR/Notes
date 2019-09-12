@@ -3,6 +3,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate # 'Flask-Migrate' uses 'Alembic' migration framework.
 from flask_login import LoginManager
+from flask_mail import Mail
 
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ login.login_view = 'login'  # 'login' value is the function (endpoint) name for 
                             # what is the view function that handles logins.
                             # (I don't understand. what 'login_view' does? Is it responsible for
                             # redirecting to the login page if user NOT LOGGED IN?)
+mail = Mail(app)
 
 
 from microblog import routes

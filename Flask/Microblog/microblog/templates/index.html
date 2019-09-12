@@ -3,10 +3,28 @@
 {% block content %}
 <h5>current_user: {{ current_user }}</h5>
 <h5>username: {{ current_user.username }}</h5>
+{% if form %}
+<form class="" action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.post.label }}<br>
+        {{ form.post(cols=32, rows=4) }}<br>
+        {% for error in form.post.errors %}
+        <span style="color: red; font-size: 12px">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endif %}
 <h2>Your Wall:</h2>
 {% for post in posts %}
-<div class="">
-    <p>{{ post.author.username }} says: <b>{{ post.body }}</b></p>
-</div>
+    {% include "_post.html" %}
 {% endfor %}
+{% if prev_url %}
+<a href="{{ prev_url }}"><<<</a>
+{% endif %}
+&nbsp
+{% if next_url %}
+<a href="{{ next_url }}">>>>></a>
+{% endif %}
 {% endblock %}
