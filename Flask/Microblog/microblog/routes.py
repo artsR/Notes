@@ -23,7 +23,7 @@ def index():
         post = Post(body=form.post.data, author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash('Your post was sent succesfully!')
+        flash('Your message was posted succesfully!')
         return redirect(url_for('index'))
                 #TODO make explanation why redirect instead of render_template...
                 #because of refreshing issue in the browser.. bla...bla...blabla...
@@ -232,3 +232,10 @@ def before_request():
         # 'load_user' which runs a database query that puts the target user in the database session.
         # So I don't need to add the user again in this function because it is already there.
         db.session.commit()
+
+        # Configuration of localization (prefered language):
+        g.locale = str(get_locale())
+                        # decorated ('@babel.localeselector') function returning
+                        # selected language and locale for a given request.
+          # adding it to the 'g' object I can access it from the 'base' template:
+          # 'moment.lang(g.locale)' adding to the 'block scripts'.
