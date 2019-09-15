@@ -60,4 +60,32 @@ I can use 'Flask-Moment' function 'moment.include_moment()' that generates '<scr
     {{ super() }}
     {{ moment.include_jquery() }}
     {{ moment.include_moment() }}
+
+    <!--translation function replacing 'Translate' link with translated text: -->
+    <script type="text/javascript">
+        function translate(sourceElem, destElem, sourceLang, destLang) {
+            // jQuery adding loading GIF in the place of 'Translate' link:
+            $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+
+            // sending with jQuery 'POST' 'request' to the '/translate' URL:
+            $.post('/translate', {
+                // '$.post(URL)' works like 'Submit' button with the 'form'.
+                // I can access outcome with 'request.form' (request.form['text']).
+                text: $(sourceElem).text(),
+                source_language: sourceLang,
+                dest_language: destLang
+                // below used 'promises' callback functions. It allows chain
+                // the callbacks to the return value (this case: to the
+                // return value of the '$.post()' )
+            }).done(function(response){
+                // '.done' syntax specifies what I want to do when the response is received.
+                $(destElem).text(response['text'])
+                                    // return value of the 'translate_text()' ('routes.py')
+                                    // is 'jsonify()' - HTTP Response object (dict).
+            }).fail(function() {
+                // '.fail' syntax specifies what to do when the error ocurrs.
+                $(destElem).text("{{ _('Error: Could not contact server.')}}");
+            });
+        }
+    </script>
 {% endblock %}

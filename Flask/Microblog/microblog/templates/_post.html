@@ -1,4 +1,3 @@
-<table class="table table-hover">
     <tr>
         <td width="40px">
             <a href="{{ url_for('user', username=post.author.username )}}">
@@ -7,9 +6,26 @@
         </td>
         <td>
             <a href="{{ url_for('user', username=post.author.username )}}">
-            {{ post.author.username }}</a> says: {{ post.body }}
+            {{ post.author.username }}</a> says:
+            <!--Below 'span' added to provide ID that helps jQuery identify text 'post.body'.
+            No visual impact: -->
+            <span id="post{{ post.id }}">{{ post.body }}</span>
             <br>
-            {{ moment(post.timestamp).fromNow() }}
+            <span style="font-size:10px">{{ moment(post.timestamp).fromNow() }}
+                {% if post.language != g.locale %}
+                <!--Below 'span' added to provide ID that helps jQuery identify element.
+                No visual impact: -->
+                <span id="translation{{ post.id }}">
+                <!--Embed 'translate()' as one of the methods of the call JS function:-->
+                <a href="javascript:translate(
+                            '#post{{ post.id }}',
+                            '#translation{{ post.id }}',
+                            '{{ post.language }}',
+                            '{{ g.locale }}');">
+                {{ _('Translate') }}
+                </a>
+                </span>
+                {% endif %}
+            </span>
         </td>
     </tr>
-</table>

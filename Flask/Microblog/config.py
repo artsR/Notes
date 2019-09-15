@@ -28,7 +28,9 @@ class Config(object):
     ADMINS = ['blabla@op.pl']
 
     # Pagination:
-    POSTS_PER_PAGE = 3
+    POSTS_PER_PAGE = 5
 
     # Text Translation:
     LANGUAGES = ['en', 'es', 'pl']
+
+    YANDEX_TRANSLATION_KEY = 'trnsl.1.1.20190915T110656Z.3b491af6a55c3b09.ea418b46a411f4db711c978e57aef174814afc6c'

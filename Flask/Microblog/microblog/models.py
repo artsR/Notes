@@ -115,6 +115,8 @@ class Post(db.Model):
                                                             # for which SQLAlchemy automatically uses lowercase
                                                             # characters and, for multi-word model names,
                                                             # snake case (snake_case).
+    language = db.Column(db.String(5))
+    
 
     def __repr__(self):
         return f'<Post {self.body}>'
