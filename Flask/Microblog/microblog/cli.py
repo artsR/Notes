@@ -1,44 +1,44 @@
 import os
 import click
-from microblog import app
 
 
-# Building groups of commands with parent of 'translate' using 'Click':
+#TODO: discribe argument 'app'
+def register(app):
+    # Building groups of commands with parent of 'translate' using 'Click':
+    @app.cli.group()
+    def translate(): # this will be a parent command that only will exist to provide
+                    # a base for the sub-commands therefore 'pass' - does not need
+                    # to do anything.
+        """Translation and localization commands."""
+        pass
 
-@app.cli.group()
-def translate(): # this will be a parent command that only will exist to provide
-                # a base for the sub-commands therefore 'pass' - does not need
-                # to do anything.
-    """Translation and localization commands."""
-    pass
+    # Below functions ('pybabel ...') returns 0 if executed properly.
 
-# Below functions ('pybabel ...') returns 0 if executed properly.
+    @translate.command() # look at 'flaskr' '@click.command('init-db')'
+    def update():
+        """Update all languages."""
+        if os.system('pybabel extract -F babel.cfg -k _l -o messages.pot .'):
+                                                # '-k _l' - assumes that lazy_gettext was imported as '_l'
+            raise RuntimeError('extract command failed')
+        if os.system('pybabel update -i messages.pot -d microblog/translations'):
+            raise RuntimeError('update command failed')
+        os.remove('messages.pot')
 
-@translate.command() # look at 'flaskr' '@click.command('init-db')'
-def update():
-    """Update all languages."""
-    if os.system('pybabel extract -F babel.cfg -k _l -o messages.pot .'):
-                                            # '-k _l' - assumes that lazy_gettext was imported as '_l'
-        raise RuntimeError('extract command failed')
-    if os.system('pybabel update -i messages.pot -d microblog/translations'):
-        raise RuntimeError('update command failed')
-    os.remove('messages.pot')
+    @translate.command()
+    def compile():
+        """Compile all languages."""
+        if os.system('pybabel compile -d microblog/translations'):
+            raise RuntimeError('compile command failed')
 
-@translate.command()
-def compile():
-    """Compile all languages."""
-    if os.system('pybabel compile -d microblog/translations'):
-        raise RuntimeError('compile command failed')
-
-@translate.command()
-@click.argument('lang') # Click passes the value provided in the command to the
-                        # handler function as an argument, and then it is incorporated
-                        # into the 'init' command:
-def init(lang):
-    """Initialize a new language."""
-    if os.system('pybabel extract -F babel.cfg -k _l -o messages.pot'):
-                                            # '-k _l' - assumes that lazy_gettext was imported as '_l'
-        raise RuntimeError('extract command failed')
-    if os.system('pybabel init -i messages.pot -d microblog/translations -l ' + lang):
-        raise RuntimeError('init command failed')
-    os.remove('messages.pot')
+    @translate.command()
+    @click.argument('lang') # Click passes the value provided in the command to the
+                            # handler function as an argument, and then it is incorporated
+                            # into the 'init' command:
+    def init(lang):
+        """Initialize a new language."""
+        if os.system('pybabel extract -F babel.cfg -k _l -o messages.pot'):
+                                                # '-k _l' - assumes that lazy_gettext was imported as '_l'
+            raise RuntimeError('extract command failed')
+        if os.system('pybabel init -i messages.pot -d microblog/translations -l ' + lang):
+            raise RuntimeError('init command failed')
+        os.remove('messages.pot')

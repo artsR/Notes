@@ -1,35 +1,22 @@
 from datetime import datetime, timedelta
 import unittest
-from microblog import create_app, db
+from microblog import app, db
 from microblog.models import User, Post
 from config import Config
 
 
-class TestConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
-
 
 class UserModelCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app(TestConfig)
-        self.app_context = self.app.app_context()
-                # Flask uses two context:
-                # (1) application context (current_app, g)
-                # (2) request context (request, session as well as Flask-Login's current_user)
-                    # It is activated right before a request is handled.
-        self.app_context.push() # push 'app_context' - brings 'current app' and 'g' to life.
-                                # When the 'request' is complete, the 'context' is removed,
-                                # along with these variables.
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://' # prevents the unit tests from
+                                                            # using the regular database that
+                                                            # I use for development. Now,
+                                                            # SQLAlchemy uses an in-memory SQLite db.
         db.create_all() # Creates all the database tables.
-                        # It uses 'current_app.config' (that was created when I pushed an
-                        # application context for the application instance)
-                        # to know where is the database.
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-        self.app_context.pop()
 
 
     def test_password_hashing(self):

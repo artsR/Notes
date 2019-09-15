@@ -1,5 +1,9 @@
 import os
+from dotenv import load_dotenv
+
+
 basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 """Use class to store configuration variables is very good idea.
 As the application needs more configuration items, they can be added to this
@@ -33,4 +37,4 @@ class Config(object):
     # Text Translation:
     LANGUAGES = ['en', 'es', 'pl']
 
-    YANDEX_TRANSLATION_KEY = 'trnsl.1.1.20190915T110656Z.3b491af6a55c3b09.ea418b46a411f4db711c978e57aef174814afc6c'
+    YANDEX_TRANSLATION_KEY = os.environ.get('YANDEX_TRANSLATION_KEY')

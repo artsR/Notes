@@ -1,0 +1,26 @@
+
+
+# C extensions
+
+
+# Packages
+dist
+build
+.installed.cfg
+__pycache__
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+
+
+# Translations
+*.mo
+
+# Mr Developer
+
+*.env
+venv
+microblog.db
+microblog.log*
