@@ -10,7 +10,8 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel # 404.html and 500.html translated only.
 from config import Config
-from . import cli
+from elasticsearch import Elasticsearch
+from microblog import cli
 
 
 
@@ -54,9 +55,15 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp)     #^ [optional] attach a 'blueprint' under a URL prefix.
                                         # Any 'routes' defined in this 'blueprint' get this prefix
-                                        # in their URLs.
-    cli.register(app)
-
+                                        # in their URLs. So foregoing 'localhost:5000/login' doesn't
+    cli.register(app)                   # work - instead I should use 'localhost:5000/auth/login'
+                                        # despite in 'bp.route(/login)' there is still just '/login'.
+    app.elasticsearch = ( Elasticsearch([app.config['ELASTICSEARCH_URL']])
+                        if app.config['ELASTICSEARCH_URL'] else None )
+        # in Python adding new attributes ('.elasticsearch') to the object
+        # can be done at any time.
+        # An alternative is to create a subclass of 'Flask' with the 'elasticsearch'
+        # attribute defined in its '__init__()' function. (whatever that means...)
     #-------------------------------------------------------------------------------
     if not app.debug and not app.testing:
             # Enable 'email logger' if application is running w/o 'debug' mode.

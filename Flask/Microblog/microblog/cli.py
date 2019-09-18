@@ -1,8 +1,13 @@
 import os
 import click
-
-
-#TODO: discribe argument 'app'
+""" 'update', 'init'
+'k _l' - first of all, the lazy_gettext as _l should be added to 'main __init__'
+"""
+# I cannot use 'current_app' instead of referring to the 'app' because below
+# commands are registered at start up, not during the 'handling request'
+# (which is the only time when 'current_app' can be used).
+# Therefore as a solution I should define function that takes 'app instance'
+# as an argument:   (this function will be called during __init__ 'app instance')
 def register(app):
     # Building groups of commands with parent of 'translate' using 'Click':
     @app.cli.group()

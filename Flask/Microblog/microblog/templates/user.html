@@ -44,12 +44,12 @@
     <ul class="pager">
         <li class="previous{% if not prev_url %} disable {% endif %}">
             <a href="{{ prev_url or '#' }}">
-                <span aria-hidden="true">&larr;</span>
+                <span aria-hidden="true">&larr;</span> next
             </a>
         </li>
         <li class="next{% if not next_url %} disable {% endif %}">
             <a href="{{ next_url or '#' }}">
-                <span aria-hidden="true">&rarr;</span>
+                prev <span aria-hidden="true">&rarr;</span>
             </a>
         </li>
     </ul>

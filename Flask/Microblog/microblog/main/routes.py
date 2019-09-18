@@ -9,13 +9,13 @@ from flask_login import current_user, login_required
 from flask_babel import get_locale
 from microblog import db
 from microblog.main import bp
-from microblog.main.forms import EditProfileForm, PostForm
+from microblog.main.forms import EditProfileForm, PostForm, SearchForm
 from microblog.models import User, Post
 from microblog.translate import translate
 
 
 
-@bp.before_request # Executing a bit of generic logic ahead of a request being dispatched
+@bp.before_app_request # Executing a bit of generic logic ahead of a request being dispatched
                 # to a view function is such a common task in web applications that
                 # Flask offers it as a native feature ('@app.before_request').
 def before_request():
@@ -26,6 +26,17 @@ def before_request():
         # 'load_user' which runs a database query that puts the target user in the database session.
         # So I don't need to add the user again in this function because it is already there.
         db.session.commit()
+
+        # 'Search' form should be in navigation bar, visible in all pages, so I need to
+        # create instance of its class regardless of the page the user is viewing.
+        # Instead of creating this 'SearchForm' object in every route and then passing
+        # the form to all templates as an argument 'render_template(.. form=form)'
+        # I'm going to store it in the 'g' container - this object exists during
+        # all the life of a 'request'. When the 'before request handler' ends,
+        # the 'g' object (and so my SearchForm) is alive. It is seen globally so
+        # I don't need to add as argument in 'render_template()' calls.
+        # ( there are different 'g' objects for different requests and clients ).
+        g.search_form = SearchForm()
 
     # Configuration of localization (prefered language):
     g.locale = str(get_locale())
@@ -52,10 +63,10 @@ def index():
         db.session.commit()
         flash('Your message was posted succesfully!')
         return redirect(url_for('main.index'))
-                #TODO make explanation why redirect instead of render_template...
-                #because of refreshing issue in the browser.. bla...bla...blabla...
-                #trick: POST/Redirect/GET pattern... To avoid inserting duplicate
-                #posts when a user refreshes the page after submitting a web form.
+                # Why redirect instead of render_template...
+                # because of refreshing issue in the browser.. bla...bla...blabla...
+                # trick: POST/Redirect/GET pattern... To avoid inserting duplicate
+                # posts when a user refreshes the page after submitting a web form.
 
     page = request.args.get('page', 1, type=int)
     posts = current_user.followed_posts().paginate(page, current_app.config['POSTS_PER_PAGE'], 0)
@@ -69,7 +80,7 @@ def index():
 
 
 @bp.route('/explore')
-#@login_required
+@login_required
 def explore():
         page = request.args.get('page', 1, type=int)
         posts = Post.query.order_by(Post.timestamp.desc()).paginate(
@@ -160,3 +171,22 @@ def translate_text():
                                 )# 'request.form' in this case will be sent to this function by JS.
     # outcome: translated text - is in form of HTTP Response object (client can get it by 'response['text']').
 })
+
+
+@bp.route('/search') # 'main.search' attached to the '/search' route, so that user can send
+        # search request entering searching words under 'q' variable in URL (like in Google).
+@login_required
+def search():
+    if not g.search_form.validate():
+        return redirect(url_for('main.explore'))
+
+    page = request.args.get('page', 1, type=int)
+    # 'g.search_form.q' - refers to the field named 'q' in the 'SearchForm' class in 'forms.py'
+    posts, total = Post.search(g.search_form.q.data, page,
+                               current_app.config['POSTS_PER_PAGE'])
+    next_url = ( url_for('main.search', q=g.search_form.q.data, page=page+1)
+                if total > page * current_app.config['POSTS_PER_PAGE'] else None )
+    prev_url = ( url_for('main.search', q=g.search_form.q.data, page=page-1)
+                if page > 1 else None )
+
+    return render_template('search.html', posts=posts, next_url=next_url, prev_url=prev_url)

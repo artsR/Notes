@@ -6,7 +6,66 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
 from flask_login import UserMixin
 from microblog import db, login
+from microblog.search import add_to_index, remove_from_index, query_index
 
+
+
+class SearchableMixin(object):
+
+    @classmethod # method that is associated w/ the class and not particular instance.
+    def search(cls, expression, page, per_page):
+
+        ids, total = query_index(cls.__tablename__, expression, page, per_page)
+                                    # convention: all indexes will be named
+                                    # w/ the name Flask-SQLAlchemy assigned to the
+                                    # relational table.
+        if total == 0:
+            return cls.query.filter_by(id=0), 0
+        when = []
+        for i in range(len(ids)):
+            when.append((ids[i], i))
+
+        # Returns 'query' and 'total', NOT 'result of query' and 'total' (?)
+        """>>>query, total = Post.search('word1 word2', 1, 5)
+           >>>query.all()
+           [<Post post1>, <Post post2> ...]
+           >>>query
+           <flask_sqlalchemy.BaseQuery object at 0x04261650>"""
+        return cls.query.filter(cls.id.in_(ids)).order_by(db.case(when, value=cls.id)), total
+                                                            # 'case' statement ensures that the
+                                                            # results from the database come in the
+                                                            # same order as the IDs are given. This
+                                                            # is important because Elasticsearch
+                                                            # query returns results sorted from
+                                                            # more to less relevant.
+    @classmethod
+    def before_commit(cls, session):
+        session._changes = {
+            'add': list(session.new),
+            'update': list(session.dirty),
+            'delete': list(session.deleted)
+        }
+
+    @classmethod
+    def after_commit(cls, session):
+        for obj in session._changes['add']:
+            if isinstance(obj, SearchableMixin):
+                add_to_index(obj.__tablename__, obj)
+        for obj in session._changes['update']:
+            if isinstance(obj, SearchableMixin):
+                add_to_index(obj.__tablename__, obj)
+        for obj in session._changes['delete']:
+            if isinstance(obj, SearchableMixin):
+                remove_from_index(obj.__tablename__, obj)
+        session._changes = None
+
+    @classmethod
+    def reindex(cls):
+        for obj in cls.query: # equivalent of 'cls.query.all()' ?
+            add_to_index(cls.__tablename__, obj)
+
+db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
+db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
 
 # Followers assosiation table:
@@ -104,7 +163,20 @@ class User(UserMixin, db.Model):
         return f'<User {self.username}>'
 
 
-class Post(db.Model):
+class Post(SearchableMixin, db.Model):
+            # Now, I can use the 'reindex()' method to initialize the index
+            # from all the posts currently in the database.
+            # All methods of 'SearchableMixin' are now available in 'Post'.
+
+    # Configuration refers to Elasticsearch Engine:
+    """To implement 'Elasticsearch Engine' I decided that every model that needs
+    indexing by 'Elasticsearch' needs to define a '__searchable__' class attribute
+    (just variable) that lists the fields that need to be included in the index.
+    It helps write my indexing functions in a generic way."""
+    __searchable__ = ['body'] # it is just a variable, doesn't have any special behavior.
+                            # This variable lets me determine what kind of field I'd
+                            # like to scan. In this case I search text in 'body' column.
+
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)

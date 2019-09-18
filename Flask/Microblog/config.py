@@ -38,3 +38,6 @@ class Config(object):
     LANGUAGES = ['en', 'es', 'pl']
 
     YANDEX_TRANSLATION_KEY = os.environ.get('YANDEX_TRANSLATION_KEY')
+
+    # Full-Text Search Engine:
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')

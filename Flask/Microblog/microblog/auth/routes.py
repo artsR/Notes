@@ -29,7 +29,7 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('auth.login'))
-
+                                    #<blueprint name>.<view function name>
         login_user(user, remember=form.remember_me.data)
             # Registers the user as logged in, so that means that any future pages
             # the user navigates to will have the 'current_user' variable set to that user.
