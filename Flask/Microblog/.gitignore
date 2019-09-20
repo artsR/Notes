@@ -22,5 +22,5 @@ pip-log.txt
 
 *.env
 venv
-microblog.db
+*microblog.db
 microblog.log*
