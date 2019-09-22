@@ -43,3 +43,8 @@ class SearchForm(FlaskForm):
             kwargs['csrf_enabled'] = False
                 # This protection has to be 'disable' search to works here.
         super(SearchForm, self).__init__(*args, **kwargs)
+
+
+class MessageForm(FlaskForm):
+    message = TextAreaField('Message', validators=[DataRequired(), Length(0, 240)])
+    submit = SubmitField('Sent message')

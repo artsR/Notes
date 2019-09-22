@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-15 09:58+0200\n"
+"POT-Creation-Date: 2019-09-21 13:24+0200\n"
 "PO-Revision-Date: 2019-09-14 10:01+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pl\n"
@@ -19,22 +19,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: microblog/templates/404.html:4
-msgid "File not found"
-msgstr "Strona nie istnieje"
-
-#: microblog/templates/500.html:4
-msgid "An unexpected error has occurred"
-msgstr "Wystąpił nieoczekiwany błąd"
-
-#: microblog/templates/500.html:5
-msgid "The administrator has been notified. Sorry for inconvenience!"
-msgstr "Administrator strony został poinformowany. Przepraszamy za niedogodności!"
-
-#: microblog/templates/_post.html:20
+#: microblog/templates/_post.html:34
 msgid "Translate"
 msgstr "Tłumacz"
 
-#: microblog/templates/base.html:74
+#: microblog/templates/base.html:102
 msgid "Error: Could not contact server."
 msgstr "Błąd: Nie udało się nawiązać połączenia z serwerem."
+
+#: microblog/templates/errors/404.html:4
+msgid "File not found"
+msgstr "Strona nie istnieje"
+
+#: microblog/templates/errors/500.html:4
+msgid "An unexpected error has occurred"
+msgstr "Wystąpił nieoczekiwany błąd"
+
+#: microblog/templates/errors/500.html:5
+msgid "The administrator has been notified. Sorry for inconvenience!"
+msgstr "Administrator strony został poinformowany. Przepraszamy za niedogodności!"
+

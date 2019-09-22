@@ -1,7 +1,7 @@
 from time import time
 from datetime import datetime
 from hashlib import md5
-import jwt
+import jwt, json
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
 from flask_login import UserMixin
@@ -68,6 +68,7 @@ db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
 
+
 # Followers assosiation table:
 """This table is not declared as a model, like 'users' and 'posts' tables.
 Since this is an auxiliary table that has no data other than 'ForeignKey'."""
@@ -105,6 +106,15 @@ class User(UserMixin, db.Model):
                             # relationship come sorted in specific way.
                     lazy='dynamic'
                     )
+    messages_sent = db.relationship('Message',
+                                    foreign_keys='Message.sender_id', # I need this to specify which ForeignKey
+                                    backref='author', lazy='dynamic') # to use for each relationship, because
+    messages_received = db.relationship('Message',
+                                        foreign_keys='Message.recipient_id', # this model has two identical
+                                        backref='recipient', lazy='dynamic') # ForeignKeys. Because SQLAlchemy
+    last_message_read_time = db.Column(db.DateTime)                          # has no way to know which one is
+                                                                             # for 'sent' or 'received' messages.
+    notifications = db.relationship('Notification', backref='user', lazy='dynamic')
 
 
     def set_password(self, password):
@@ -159,8 +169,25 @@ class User(UserMixin, db.Model):
             return None
         return User.query.get(id)
 
+    def new_messages(self):
+        last_read_time = self.last_message_read_time or datetime(1900,1,1)
+        return Message.query.filter_by(recipient=self).filter(
+            Message.timestamp > last_read_time).count()
+
+    def add_notification(self, name, data):
+        self.notifications.filter_by(name=name).delete()
+        n = Notification(name=name, payload_json=json.dumps(data), user=self)
+        db.session.add(n)
+        """I didn't 'db.session.commit()' here it is not good practice to commit
+        in random places in the code. Commits are normally issued by high-level
+        code such as a route handler.
+        http://docs.sqlalchemy.org/en/latest/orm/session_basics.html#when-do-i-construct-a-session-when-do-i-commit-it-and-when-do-i-close-it
+        """
+        return n
+
     def __repr__(self):
         return f'<User {self.username}>'
+
 
 
 class Post(SearchableMixin, db.Model):
@@ -195,8 +222,33 @@ class Post(SearchableMixin, db.Model):
         return f'<Post {self.body}>'
 
 
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<Message {self.body}'
+
+
 # Flask-Login knows nothing about databases therefore it expects that the
 # application will configure a user 'loader function', that can be load a user ID:
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+
+
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.Float, index=True, default=time)
+    payload_json = db.Column(db.Text)
+
+    def get_data(self):
+        """So that caller doesn't have to worry about JSON deserialization."""
+        return json.loads(str(self.payload_json))

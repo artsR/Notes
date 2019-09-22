@@ -17,6 +17,10 @@
             <p style="font-style: italic; font-size: 12px">
                 {{ user.followers.count() }} followers, {{ user.followed.count() }} following.
             </p>
+            {% if user != current_user %}
+                <a href="{{ url_for('main.send_message', recipient=user.username) }}">
+                Private message</a>
+            {% endif %}
         </td>
     </tr>
     {% if user == current_user %}
