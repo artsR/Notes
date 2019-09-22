@@ -41,7 +41,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
-    migrate.init_app(app)
+    migrate.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
     bootstrap.init_app(app)
@@ -135,7 +135,8 @@ from microblog import models # defines the structure of the database.
 
 
 # # To use 'flask shell' w/o need of importing everytime 'User', 'Post' and 'db'
-# from microblog.models import User, Post
+# from microblog.models import User, Post, Message, Notification
 # @app.shell_context_processor
 # def make_shell_context():
-#     return { 'db': db, 'User': User, 'Post': Post }
+#     return { 'db': db, 'User': User, 'Post': Post, 'Message': Message,
+#           'Notification': Notification }
