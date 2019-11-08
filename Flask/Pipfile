@@ -19,6 +19,9 @@ guess-language-spirit = "*"
 requests = "*"
 python-dotenv = "*"
 elasticsearch = "*"
+rq = "*"
+flask-login = "*"
+flask-scss = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.7.4"

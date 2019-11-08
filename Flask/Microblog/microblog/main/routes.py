@@ -115,6 +115,9 @@ def user(username):
 def edit_profile():
 
     form = EditProfileForm(current_user.username)
+                                # argument sends to '__init__' to set 'original_username'
+                                # that will serve for future form validation after
+                                # sent 'form' by user. (# main/forms.py --> EditProfileForm)
 
     if form.validate_on_submit():
         current_user.username = form.username.data
@@ -179,7 +182,7 @@ def translate_text():
 def search():
     if not g.search_form.validate():
         return redirect(url_for('main.explore'))
-
+    flash(request.args)
     page = request.args.get('page', 1, type=int)
     # 'g.search_form.q' - refers to the field named 'q' in the 'SearchForm' class in 'forms.py'
     posts, total = Post.search(g.search_form.q.data, page,
@@ -231,7 +234,7 @@ def messages():
     # Take 'page' argument from URL:
     page = request.args.get('page', 1, type=int)
 
-    messages = current_user.messages_received.order_by(Message.timestamp.desc())\
+    messages = current_user.get_messages().order_by(Message.timestamp.desc())\
             .paginate(page, current_app.config['POSTS_PER_PAGE'], False)
 
     next_url = ( url_for('main.messages', page=messages.next_num)

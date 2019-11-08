@@ -23,6 +23,8 @@ login.login_view = 'auth.login'  # 'login' value is the function (endpoint) name
                             # what is the view function that handles logins.
                             # (I don't understand. what 'login_view' does? Is it responsible for
                             # redirecting to the login page if user NOT LOGGED IN?)
+                            # Yes it 'redirects' to the 'auth.login' otherwise if user is not logged in
+                            # 'error 401' would be returned.
 # login.login_message = 'Please log in to access this page'
                             # This message is generated as default by 'Flask-Login' extension when
                             # user w/o login tries access page that '@login_required'.

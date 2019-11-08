@@ -174,6 +174,10 @@ class User(UserMixin, db.Model):
         return Message.query.filter_by(recipient=self).filter(
             Message.timestamp > last_read_time).count()
 
+    def get_messages(self):
+        own = Message.query.filter_by(author=self)
+        return self.messages_received.union(own)
+
     def add_notification(self, name, data):
         self.notifications.filter_by(name=name).delete()
         n = Notification(name=name, payload_json=json.dumps(data), user=self)
@@ -234,13 +238,6 @@ class Message(db.Model):
         return f'<Message {self.body}'
 
 
-# Flask-Login knows nothing about databases therefore it expects that the
-# application will configure a user 'loader function', that can be load a user ID:
-@login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
-
-
 
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -252,3 +249,11 @@ class Notification(db.Model):
     def get_data(self):
         """So that caller doesn't have to worry about JSON deserialization."""
         return json.loads(str(self.payload_json))
+
+
+
+# Flask-Login knows nothing about databases therefore it expects that the
+# application will configure a user 'loader function', that can be load a user ID:
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
