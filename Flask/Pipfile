@@ -22,6 +22,8 @@ elasticsearch = "*"
 rq = "*"
 flask-login = "*"
 flask-scss = "*"
+httpauth = "*"
+flask-httpauth = "*"
 
 [requires]
 python_version = "3.7.4"
